@@ -1,0 +1,28 @@
+{% extends 'website/layout.html' %} {% block title %}
+  CRM | Home
+{% endblock %}
+{% block content %}
+  <div class="col-md-6 offset-md-3 border border-2 border-secondary px-5 py-4 rounded-3 my-5">
+    {% if request.user.is_authenticated %}
+      <h2 class="display-4 fw-bold">Hello {{ user|title }}</h2>
+    {% else %}
+      <h1 class="fw-bold text-center">Login</h1>
+
+      <form action="{% url 'home' %}" method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="user-name" class="form-label fs-4 fw-bold">User Name</label>
+          <input type="text" class="form-control fs-4 py-2 px-3 border" placeholder="Enter Your Name...." id="user-name" name="username" aria-describedby="userHelp" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label fs-4 fw-bold">Password</label>
+          <input type="password" class="form-control fs-4 py-2 px-3 rounded-3" placeholder="Enter Your Password...." name="password" id="password" required />
+        </div>
+
+        <button type="submit" class="btn btn-outline-success btn-lg fs-4">Submit</button>
+      </form>
+
+    {% endif %}
+  </div>
+{% endblock %}
