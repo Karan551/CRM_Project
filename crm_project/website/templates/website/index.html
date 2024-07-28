@@ -2,10 +2,43 @@
   CRM | Home
 {% endblock %}
 {% block content %}
-  <div class="col-md-6 offset-md-3 border border-2 border-secondary px-5 py-4 rounded-3 my-5">
-    {% if request.user.is_authenticated %}
-      <h2 class="display-4 fw-bold">Hello {{ user|title }}</h2>
-    {% else %}
+  {% if request.user.is_authenticated %}
+    <h2 class="display-4 fw-bold text-center my-2">Customer Records....</h2>
+    {% if records %}
+      <table class="table table-striped table-hover table-bordered">
+        <thead class="fs-5">
+          <tr class="table-primary">
+            <th scope="col">Name</th>
+            <th scope="col">Contact Number</th>
+            <th scope="col">Email Address</th>
+            <th scope="col">Address</th>
+            <th scope="col">City</th>
+            <th scope="col">Zip Code</th>
+            <th scope="col">Created At</th>
+            <th scope="col">ID</th>
+          </tr>
+        </thead>
+
+        <tbody class="fs-6">
+          {% for record in records %}
+            <tr>
+              <th scope="row">{{ record.first_name }} {{ record.last_name }}</th>
+              <td>{{ record.contact_number }}</td>
+              <td>{{ record.email_address }}</td>
+              <td>{{ record.address }}</td>
+              <td>{{ record.city }}</td>
+              <td>{{ record.zipCode }}</td>
+              <td>{{ record.created_at }}</td>
+              <td>
+                <a href="{% url 'user_record' record.id %}">{{ record.id }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  {% else %}
+    <div class="col-md-6 offset-md-3 border border-2 border-secondary px-5 py-4 rounded-3 my-5">
       <h1 class="fw-bold text-center">Login</h1>
 
       <form action="{% url 'home' %}" method="post">
@@ -13,9 +46,7 @@
 
         <div class="mb-3">
           <label for="user-name" class="form-label fs-4 fw-bold">User Name</label>
-          <input type="text" class="form-control fs-4 py-2 px-3 border" placeholder="Enter Your Name...." id="user-name" name="username" 
-          autocomplete="username"
-          aria-describedby="userHelp" required />
+          <input type="text" class="form-control fs-4 py-2 px-3 border" placeholder="Enter Your Name...." id="user-name" name="username" autocomplete="username" aria-describedby="userHelp" required />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label fs-4 fw-bold">Password</label>
@@ -24,15 +55,13 @@
         </div>
 
         <div class="form-check mb-3">
-          <input class="form-check-input hover-cursor-pointer" type="checkbox" id="password-check">
+          <input class="form-check-input hover-cursor-pointer" type="checkbox" id="password-check" />
 
-          <label class="form-check-label hover-cursor-pointer" for="password-check">
-            Show Password
-          </label>
+          <label class="form-check-label hover-cursor-pointer" for="password-check">Show Password</label>
         </div>
-        
+
         <button type="submit" class="btn btn-outline-success btn-lg fs-4">Submit</button>
       </form>
-    {% endif %}
-  </div>
+    </div>
+  {% endif %}
 {% endblock %}

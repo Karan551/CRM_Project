@@ -1,0 +1,39 @@
+{% extends 'website/layout.html' %} {% block title %}
+  CRM | User Info.
+{% endblock %}
+
+{% block content %}
+  <section class="container">
+    <h3>User Information Is:</h3>
+    <div class="card">
+      <div class="card-header fs-3 fw-bold">{{ user_record }}</div>
+      <div class="card-body">
+        <p class="card-text fs-5">
+          <strong>Contact Number:</strong> {{ user_record.contact_number }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>Email:</strong> {{ user_record.email_address }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>City:</strong> {{ user_record.city }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>Zip Code:</strong> {{ user_record.zipCode }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>Address:</strong> {{ user_record.address }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>Created At:</strong> {{ user_record.created_at }}
+        </p>
+        <p class="card-text fs-5">
+          <strong>Customer ID:</strong> {{ user_record.id }}
+        </p>
+      </div>
+    </div>
+
+    <a href="{% url 'home' %}" class="my-2 mx-2 link btn btn-secondary btn-lg">Back To Home</a>
+    <a href="{% url 'update_record' user_record.id %}" class="my-2 mx-2 link btn btn-warning btn-lg">Update Record</a>
+    <a href="{% url 'delete_record' user_record.id %}" class="my-2 mx-2 link btn btn-danger btn-lg">Delete Record</a>
+  </section>
+{% endblock %}

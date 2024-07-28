@@ -14,3 +14,7 @@ class Record(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class RelatedModel(models.Model):
+    record = models.ForeignKey(Record, on_delete=models.CASCADE)

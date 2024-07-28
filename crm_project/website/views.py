@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm, AddRecordForm
 from django.http import HttpResponse
+from .models import Record
 
 
 # Create your views here.
 def index(request):
+    records = Record.objects.all()
     if request.method == "POST":
         username = request.POST["username"].lower()
         password = request.POST["password"]
@@ -20,7 +22,7 @@ def index(request):
             return redirect("home")
 
     else:
-        return render(request, "website/index.html")
+        return render(request, "website/index.html", {"records": records})
 
 
 def user_logout(request):
@@ -32,8 +34,6 @@ def user_logout(request):
 def user_register(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
-        # print(form.errors)
-        # print(form.is_valid())
         if form.is_valid():
             form.save()
             # Authenticate and login
@@ -46,4 +46,55 @@ def user_register(request):
         form = SignUpForm()
     return render(request, "website/register.html", {"form": form})
 
-    # return render(request, "website/register.html", {"form": form})
+
+def user_record(request, user_id):
+    if request.user.is_authenticated:
+        user_information = get_object_or_404(Record, pk=user_id)
+        # print("this is user information", user_information)
+        return render(request, "website/record.html", {"user_record": user_information})
+    else:
+        messages.error(request, "Please Login First To See Information.")
+        return redirect("home")
+
+
+def delete_record(request, user_id):
+    if request.user.is_authenticated:
+        customer = get_object_or_404(Record, pk=user_id)
+        customer.delete()
+        messages.success(request, "Record Deleted Successfully .")
+        return redirect("home")
+    else:
+        messages.error(request, "Please Login First To Delete Record.")
+        return redirect("home")
+
+
+def add_record(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = AddRecordForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record Added Successfully.")
+                return redirect("home")
+        else:
+            form = AddRecordForm()
+        return render(request, "website/add_record.html", {"form": form})
+    else:
+        messages.error(request, "Please Login First To Add Record.")
+        return redirect("home")
+
+
+def update_record(request, user_id):
+    if request.user.is_authenticated:
+        current_user = get_object_or_404(Record, pk=user_id)
+        if request.method == "POST":
+            form = AddRecordForm(request.POST)
+            if form.is_valid():
+                form.save()
+            pass
+        else:
+            form = AddRecordForm(instance=current_user)
+            return render(request, "website/update_record.html", {"form": form})
+    else:
+        messages.error(request, "Please Login First To Update Record.")
+        return redirect("home")

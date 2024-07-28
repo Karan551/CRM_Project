@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .models import Record
+
+css_class = "mb-3 form-control form-control-lg fs-4 px-3"
 
 
 class SignUpForm(UserCreationForm):
@@ -54,3 +57,57 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "email", "password1", "password2")
+
+
+class AddRecordForm(forms.ModelForm):
+    class Meta:
+        model = Record
+        fields = ["first_name", "last_name", "contact_number", "email_address", "address", "city", "zipCode"]
+
+        labels = {
+            "first_name": "Enter First Name",
+            "last_name": "Enter Last Name",
+            "contact_number": "Enter Contact Number",
+            "email_address": "Enter Email Address",
+            "city": "Enter City Name",
+            "zipCode": "Enter Zip Code",
+            "address": "Enter Your Address",
+        }
+
+        widgets = {
+            "first_name": forms.TextInput(attrs={
+                "placeholder": "Enter First Name...",
+                "class": css_class,
+            }),
+
+            "last_name": forms.TextInput(attrs={
+                "placeholder": "Enter Last Name...",
+                "class": css_class,
+            }),
+
+            "contact_number": forms.TextInput(attrs={
+                "placeholder": "Enter Contact Number...",
+                "class": css_class,
+            }),
+
+            "email_address": forms.TextInput(attrs={
+                "placeholder": "Enter Your Email Address...",
+                "class": css_class
+            }),
+
+            "address": forms.TextInput(attrs={
+                "placeholder": "Enter Your Address...",
+                "class": css_class
+            }),
+
+            "city": forms.TextInput(attrs={
+                "placeholder": "Enter Your City...",
+                "class": css_class
+            }),
+
+            "zipCode": forms.TextInput(attrs={
+                "placeholder": "Enter Your Zip Code...",
+                "class": css_class
+            }),
+
+        }
