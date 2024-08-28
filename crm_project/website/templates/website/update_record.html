@@ -1,29 +1,32 @@
 {% extends 'website/layout.html' %}
 {% block title %}
-  CRM | Update Record
+CRM | Update Record
 {% endblock %}
 {% block content %}
-  <section class="col-12 col-md-7 offset-md-3 border border-2 rounded-3 px-3 py-2">
+<section class="col-12 col-md-7 offset-md-3 border border-2 rounded-3 px-3 py-2">
     <h2 class="text-center mb-4 display-5">Update User:</h2>
-    <form>
-      {{ form }}
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
 
-      {% if form.errors or form.non_field_errors %}
+        {% if form.errors or form.non_field_errors %}
         {% for field in form %}
-          {% if field.errors %}
-            {% for error in field.errors %}
-              <div class="alert alert-danger text-bg-danger alert-dismissible fade show" role="alert">
-                <p class="fs-5">{{ error }}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
-          {% endif %}
+        {% if field.errors %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger text-bg-danger alert-dismissible fade show" role="alert">
+            <p class="fs-5">{{ error }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% endfor %}
 
         <p class="text-danger">{{ form.non_field_errors }}</p>
-      {% endif %}
+        {% endif %}
 
-      <button type="submit" class="my-2 fs-4 btn btn-lg btn-outline-success">Submit</button>
+        <button type="submit" class="my-2 fs-4 btn btn-lg btn-outline-success">Submit</button>
+
+        <a href="{% url 'home' %}" class="btn btn-lg btn-outline-warning fs-4 mx-3">Back</a>
     </form>
-  </section>
+</section>
 {% endblock %}

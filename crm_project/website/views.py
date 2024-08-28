@@ -8,7 +8,7 @@ from .models import Record
 
 # Create your views here.
 def index(request):
-    records = Record.objects.all()
+    records = Record.objects.all().order_by("created_at")
     if request.method == "POST":
         username = request.POST["username"].lower()
         password = request.POST["password"]
@@ -88,10 +88,11 @@ def update_record(request, user_id):
     if request.user.is_authenticated:
         current_user = get_object_or_404(Record, pk=user_id)
         if request.method == "POST":
-            form = AddRecordForm(request.POST)
+            form = AddRecordForm(request.POST, instance=current_user)
             if form.is_valid():
                 form.save()
-            pass
+                messages.success(request, "Record Updated Successfully.")
+                return redirect("home")
         else:
             form = AddRecordForm(instance=current_user)
             return render(request, "website/update_record.html", {"form": form})

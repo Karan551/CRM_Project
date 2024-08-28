@@ -15,14 +15,19 @@
             <th scope="col">City</th>
             <th scope="col">Zip Code</th>
             <th scope="col">Created At</th>
-            <th scope="col">ID</th>
+            <th scope="col">S.No.</th>
           </tr>
         </thead>
 
         <tbody class="fs-6">
           {% for record in records %}
             <tr>
-              <th scope="row">{{ record.first_name }} {{ record.last_name }}</th>
+
+<th scope="row"><a href="{% url 'user_record' record.id %}" class="text-decoration-none hover-text-underline">
+  {{ record.first_name }} {{ record.last_name }} </a>
+
+
+</th>
               <td>{{ record.contact_number }}</td>
               <td>{{ record.email_address }}</td>
               <td>{{ record.address }}</td>
@@ -30,7 +35,7 @@
               <td>{{ record.zipCode }}</td>
               <td>{{ record.created_at }}</td>
               <td>
-                <a href="{% url 'user_record' record.id %}">{{ record.id }}</a>
+                <a href="{% url 'user_record' record.id %}">{{ forloop.counter }}</a>
               </td>
             </tr>
           {% endfor %}
