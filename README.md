@@ -10,3 +10,9 @@ Welcome to our CRM (Customer Relationship Management) application documentation.
 - **Dashboard**: Overview of customer.
 
 - **Customization**: Customize fields and settings to suit your business needs.
+
+## Requirements
+
+- Python 3.12+
+- Django 5.12
+- PostgresSQL
